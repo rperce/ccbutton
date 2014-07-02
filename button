@@ -1,1 +1,39 @@
+-- vim: ft=lua
+local areas = {}
+function open(direction)
+
+end
+
+local function add_area(x1, y1, x2, y2)
+    areas:insert({x1=x1, y1=y1, x2=x2, y2=y2, rows={}})
+end
+
+function area(args)
+    if args == nil then args = {} end
+    local x1 = args[1] or 1
+    local y1 = args[2] or 1
+    local x2 = args[3] or -1
+    local y2 = args[4] or -1
+
+end
+
+function row(args)
+
+end
+
+function new(args)
+
+end
+
+function single(args)
+
+end
+
+function draw()
+
+end
+
+function loop()
+
+end
 

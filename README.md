@@ -46,10 +46,8 @@ last row that is ten columns wide and extends to the last row (which is where it
 started, so the area is only one row tall).  Negative relative distance is not
 supported.
 
-If only `x1` and `y1` are supplied, the area will expand to the right and down
-to fill as much as it can, staying one space away from other areas.  If no
-arguments are supplied, the area will fill the monitor regardless of potential
-overlap.
+`x1` and `y1` default to 1; `x2` and `y2` default to -1.  These values will be
+used for arguments that are missing or nil.
 
 This method returns an integer id to the created area for use in row adding, as
 seen below.
