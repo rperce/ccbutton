@@ -7,7 +7,7 @@ This file goes in `<minecraft_dir>/saves/<world>/computer/<id>/`, where <world>
 is the world your computer is in and <id> is the id of the computer (running
 'id' without quotes on the computer will tell you what that is).
 
-Use this in your program by starting with `os.include("button")`
+Use this in your program by starting with `os.loadAPI("button")`
 
 The layout is divided into areas, which contain rows, which contain buttons.
 Buttons stretch horizontally to fit their row; rows stretch vertically to fit
