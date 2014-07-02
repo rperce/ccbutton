@@ -79,7 +79,7 @@ button will be to the right of previously created buttons in its row.  Within
 each row, each button except the last has one blank character after it for
 spacing.
 
-Alternatively, one may call `button.single{x1, y1, x2, y2, action}`, which
+Alternatively, one may call `button.single{[x1, y1, [x2, y2,]] action}`, which
 creates a new area at the specified location using normal area-creation rules,
 gives the area a single row, and adds to that row a single button with the
 specified action. This does affect what counts as "most recently used" for
