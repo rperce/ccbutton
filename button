@@ -1,28 +1,64 @@
 -- vim: ft=lua
 button_areas = {}
+
 function open(direction)
 
 end
 
-local function add_area(x1, y1, x2, y2)
-    button_areas:insert({x1=x1, y1=y1, x2=x2, y2=y2, rows={}})
-end
-
+local areas = 0
+last_area = nil
 function area(args)
     if args == nil then args = {} end
     local x1 = args[1] or 1
     local y1 = args[2] or 1
     local x2 = args[3] or -1
     local y2 = args[4] or -1
-    
+    table.insert(button_areas, {x1=x1, y1=y1, x2=x2, y2=y2, rows={}})
+    areas = areas + 1
+    last_area = areas
+    return areas
 end
 
 function row(args)
-
+    if args == nil then args = {}
+    elseif type(args) ~= "table" then
+        error("Error: row expects table argument")
+    end
+    local access = args[1] or last_area
+    if not button_areas[access] then
+        area()
+        last_area = 1
+        access = 1
+    end
+    local target = button_areas[last_area].rows
+    table.insert(target, {})
+    return {last_area, #target}
 end
 
 function new(args)
+    if args == nil then args = {} end
+    if (not args[1]) or (type(args[1])=="table" and not args[2]) then
+        error("Error: action required.")
+    end
+    local aID, rID
+    if type(args[1]) == "table" then
+        aID = args[1][1]
+        rID = args[1][2]
+    end
+    aID = aID or last_Area or 1
+    rID = rID or 1
 
+    if aID > areas then
+        aID = area()
+    else
+        last_area = aID
+    end
+
+    if rID > #button_areas[aID].rows then
+        rID = row{aID}[2]
+    end
+
+    button_areas[rID]
 end
 
 function single(args)
@@ -37,3 +73,8 @@ function loop()
 
 end
 
+function reset()
+    areas = 0
+    last_area = nil
+    button_areas = {}
+end
