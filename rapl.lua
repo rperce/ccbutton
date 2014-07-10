@@ -4,6 +4,9 @@ local function deepcompare(t1,t2)
     if ty1 ~= ty2 then return false end
 
     if ty1 ~= 'table' then return t1 == t2 end
+    if t1.metatable and t2.metatable and t1.metatable.__eq then
+        return t1 == t2
+    end
 
     for k1,v1 in pairs(t1) do
         local v2 = t2[k1]

@@ -8,7 +8,7 @@ end
 local areas = 0
 last_area = nil
 function area(args)
-    if args == nil then args = {} end
+    if not args then args = {} end
     local x1 = args[1] or 1
     local y1 = args[2] or 1
     local x2 = args[3] or -1
@@ -20,7 +20,7 @@ function area(args)
 end
 
 function row(args)
-    if args == nil then args = {}
+    if not args then args = {}
     elseif type(args) ~= "table" then
         error("Error: row expects table argument")
     end
@@ -36,7 +36,7 @@ function row(args)
 end
 
 function new(args)
-    if args == nil then args = {} end
+    if not args then args = {} end
     if (not args[1]) or (type(args[1])=="table" and not args[2]) then
         error("Error: action required.")
     end
@@ -45,7 +45,7 @@ function new(args)
         aID = args[1][1]
         rID = args[1][2]
     end
-    aID = aID or last_Area or 1
+    aID = aID or last_area or 1
     rID = rID or 1
 
     if aID > areas then
@@ -58,11 +58,22 @@ function new(args)
         rID = row{aID}[2]
     end
 
-    button_areas[rID]
+    button_areas[aID].rows[rID] = {action}
 end
 
 function single(args)
-
+    if not args then args = {} end
+    if type(args[#args]) ~= "function" then
+        error("Error: last argument to single must be function")
+    end
+    local pass = {}
+    for i=1, #args do
+        if type(args[i]) ~= "function" then
+            table.insert(pass, args[i])
+        else break end
+    end
+    area(unpack(pass))
+    new(args[#args])
 end
 
 function draw()

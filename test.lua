@@ -35,6 +35,11 @@ function test.multiple_area_ids()
     i = area()
     is.Equal(2, i)
 end
+function test.add_couple_areas()
+    area() area() area() area()
+    local i = area()
+    is.equal(5, i)
+end
 
 function test.row_makes_area()
     local i = row()
