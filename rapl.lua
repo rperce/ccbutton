@@ -64,8 +64,11 @@ if debug.getinfo(3) then
     end end
     function t.Sized(n, table)
         local ct = 0
+        if(type(table)~="table") then
+            err("table, received "..type(table))
+        end
         for _,__ in pairs(table) do ct = ct + 1 end
-        if ct ~= n then 
+        if ct ~= n then
             err(n.." items, found "..ct)
     end end
     function t.Errored(str, fn, ...)

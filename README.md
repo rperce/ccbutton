@@ -20,7 +20,8 @@ running.  Then add areas, rows, and buttons as below, and finally call
 the screen may be performed by use of `button.draw()`.
 
 Note that all methods below use braces, not parentheses.  In Lua, calling
-`method{}` is syntactic sugar for calling `method({})`.
+`method{}` is syntactic sugar for calling `method({})`---and all these methods
+expect a single table argument.
 
 Areas
 -----
@@ -83,4 +84,7 @@ gives the area a single row, and adds to that row a single button with the
 specified action. This does affect what counts as "most recently used" for
 adding buttons and rows without specific IDs.
 
-The `action` method passed should return the text of the button.
+The `action` method passed should return the text of the button (default ""),
+the foreground color of the text (default white), and the background color of
+the button (default green) in that order. The defaults above will be used for
+any return values that are nil or of the incorrect type.

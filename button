@@ -1,5 +1,12 @@
 -- vim: ft=lua
 button_areas = {}
+local function check(args, str)
+    if not args then return {} end
+    if type(args) ~= "table" then
+        error("Error: call with "..str.."{}, not "..str.."().")
+    end
+    return args
+end
 
 function open(direction)
 
@@ -8,7 +15,7 @@ end
 local areas = 0
 last_area = nil
 function area(args)
-    if not args then args = {} end
+    args = check(args, "area")
     local x1 = args[1] or 1
     local y1 = args[2] or 1
     local x2 = args[3] or -1
@@ -20,10 +27,7 @@ function area(args)
 end
 
 function row(args)
-    if not args then args = {}
-    elseif type(args) ~= "table" then
-        error("Error: row expects table argument")
-    end
+    args = check(args, "row")
     local access = args[1] or last_area
     if not button_areas[access] then
         area()
@@ -36,44 +40,47 @@ function row(args)
 end
 
 function new(args)
-    if not args then args = {} end
-    if (not args[1]) or (type(args[1])=="table" and not args[2]) then
+    args = check(args, "new")
+
+    if (not args[1]) or (type(args[#args])~="function") then
         error("Error: action required.")
+    elseif (type(args[1]) ~= "table") and (type(args[1]) ~= "function") then
+        error("Error: first arg must be table or function.")
     end
     local aID, rID
     if type(args[1]) == "table" then
         aID = args[1][1]
         rID = args[1][2]
     end
-    aID = aID or last_area or 1
-    rID = rID or 1
 
+    aID = aID or last_area or 1
     if aID > areas then
         aID = area()
     else
         last_area = aID
     end
 
-    if rID > #button_areas[aID].rows then
+    rID = rID or #(button_areas[aID].rows)
+    if rID > #button_areas[aID].rows or rID < 1 then
         rID = row{aID}[2]
     end
 
-    button_areas[aID].rows[rID] = {action}
+    table.insert(button_areas[aID].rows[rID], {action = args[#args]})
 end
 
 function single(args)
-    if not args then args = {} end
+    args = check(args, "single")
     if type(args[#args]) ~= "function" then
-        error("Error: last argument to single must be function")
+        error("Error: last argument to single must be function.")
     end
     local pass = {}
     for i=1, #args do
         if type(args[i]) ~= "function" then
             table.insert(pass, args[i])
-        else break end
+        end
     end
-    area(unpack(pass))
-    new(args[#args])
+    area{unpack(pass)}
+    new{args[#args]}
 end
 
 function draw()

@@ -1,0 +1,23 @@
+#!/usr/bin/ruby
+
+@cmd = ARGV[0]
+ARGV.delete_at(0)
+
+
+map = Hash[ARGV.map do |file|
+    s = [file, `stat -c %Y #{file}`.strip()]
+    s
+end]
+print map; puts
+
+loop do
+    ARGV.each do |file|
+        time = `stat -c %Y #{file}`.strip()
+        if not time == map[file] then
+            map[file] = time
+            puts `#{@cmd}`
+        end
+    end
+end
+
+
